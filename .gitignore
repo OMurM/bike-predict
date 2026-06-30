@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Databricks
+.databricks/
+*.ipynb_checkpoints/
+.ipynb_checkpoints/
+
+# Tests / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.neovim/
+Session.vim
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env vars / secrets
+.env
+.env.*
+*.secret
+
+# MLflow local runs
+mlruns/
+mlartifacts/
+
+# Logs
+*.log
+logs/
