@@ -27,7 +27,7 @@ def write_to_bronze(motos: List[MotoDTO], spark: SparkSession, config: DeltaConf
     # Guardamos el count antes de crear el DF para no pagar una acción extra
     count = len(rows)
 
-    from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType, DateType
+    from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType, DateType, BooleanType
     schema = StructType([
         StructField("marca", StringType(), True),
         StructField("modelo", StringType(), True),
@@ -40,6 +40,10 @@ def write_to_bronze(motos: List[MotoDTO], spark: SparkSession, config: DeltaConf
         StructField("ubicacion", StringType(), True),
         StructField("url_anuncio", StringType(), True),
         StructField("descripcion", StringType(), True),
+        StructField("distintivo_ambiental", StringType(), True),
+        StructField("num_plazas", IntegerType(), True),
+        StructField("num_llaves", IntegerType(), True),
+        StructField("iva_deducible", BooleanType(), True),
         StructField("ingestion_date", DateType(), True)
     ])
     df = spark.createDataFrame(rows, schema=schema)

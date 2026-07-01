@@ -38,10 +38,14 @@ def parse_motorbike(raw: dict) -> Optional[MotoDTO]:
             tipo=tipo,
             precio=float(raw["price"]),
             cilindrada_cc=int(raw["cc"]) if raw.get("cc") else None,
-            potencia_cv=None,  # la API no lo expone en el listado
-            ubicacion=None,    # tampoco en el listado general
+            potencia_cv=None,
+            ubicacion=None,
             url_anuncio=f"https://mundimoto.com/es/moto/{raw['id']}?flow=SALE",
             descripcion=None,
+            distintivo_ambiental=raw.get("emission_type"),
+            num_plazas=int(raw["num_seats"]) if raw.get("num_seats") else None,
+            num_llaves=int(raw["num_keys"]) if raw.get("num_keys") else None,
+            iva_deducible=bool(raw.get("deductible_vat")) if raw.get("deductible_vat") is not None else None,
         )
     except (KeyError, TypeError, ValueError) as e:
         logger.debug("Error parseando moto id=%s: %s", raw.get("id", "?"), e)

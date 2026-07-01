@@ -28,12 +28,17 @@ def silver_to_gold(spark: SparkSession, config: DeltaConfig) -> DataFrame:
             .otherwise("otro")
         )
         .withColumn("log_precio", F.log(F.col("precio")))
+        .withColumn("distintivo_ambiental", F.coalesce(F.col("distintivo_ambiental"), F.lit("desconocido")))
+        .withColumn("num_plazas", F.coalesce(F.col("num_plazas"), F.lit(2)))
+        .withColumn("num_llaves", F.coalesce(F.col("num_llaves"), F.lit(1)))
+        .withColumn("iva_deducible", F.coalesce(F.col("iva_deducible").cast("string"), F.lit("false")))
     )
 
     return df.select(
         "marca", "modelo", "anio", "edad_anios",
         "km", "km_bucket", "tipo_normalizado",
         "cilindrada_cc", "potencia_cv", "ubicacion",
+        "distintivo_ambiental", "num_plazas", "num_llaves", "iva_deducible",
         "precio", "log_precio", "url_anuncio"
     )
 

@@ -36,5 +36,5 @@ def bronze_to_silver(spark: SparkSession, config: DeltaConfig) -> DataFrame:
 
 
 def write_silver(df: DataFrame, config: DeltaConfig) -> None:
-    df.write.format("delta").mode("overwrite").saveAsTable(config.silver_full)
+    df.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(config.silver_full)
     logger.info("Tabla silver actualizada: %s", config.silver_full)
