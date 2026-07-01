@@ -21,10 +21,11 @@ def run_all():
         .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog") \
         .config("spark.sql.warehouse.dir", "/app/spark-warehouse") \
         .config("javax.jdo.option.ConnectionURL", "jdbc:derby:/app/spark-warehouse/metastore_db;create=true") \
+        .config("spark.driver.memory", "4g") \
         .enableHiveSupport() \
         .getOrCreate()
         
-    cfg_scrap = ScraperConfig(base_url="https://api.mundimoto.com/mundimoto-api", max_pages=5)
+    cfg_scrap = ScraperConfig(base_url="https://api.mundimoto.com/mundimoto-api", max_pages=300)
     cfg_delta = DeltaConfig(catalog="spark_catalog")
     cfg_ml = MLConfig()
 

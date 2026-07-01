@@ -34,10 +34,10 @@ def silver_to_gold(spark: SparkSession, config: DeltaConfig) -> DataFrame:
         "marca", "modelo", "anio", "edad_anios",
         "km", "km_bucket", "tipo_normalizado",
         "cilindrada_cc", "potencia_cv", "ubicacion",
-        "precio", "log_precio"
+        "precio", "log_precio", "url_anuncio"
     )
 
 
 def write_gold(df: DataFrame, config: DeltaConfig) -> None:
-    df.write.format("delta").mode("overwrite").saveAsTable(config.gold_full)
+    df.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(config.gold_full)
     logger.info("Tabla gold actualizada: %s", config.gold_full)

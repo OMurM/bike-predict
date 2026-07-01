@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.StringIndexerModel","timestamp":1782918619883,"sparkVersion":"3.5.1","uid":"StringIndexer_188a7e085b6f","paramMap":{"handleInvalid":"keep","outputCol":"km_bucket_idx","inputCol":"km_bucket"},"defaultParamMap":{"handleInvalid":"error","outputCol":"StringIndexer_188a7e085b6f__output","stringOrderType":"frequencyDesc"}}

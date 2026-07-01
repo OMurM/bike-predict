@@ -47,4 +47,6 @@ metastore_db/
 *.log
 logs/
 
-# NOTA: No ignoramos mlruns/ ni mlartifacts/ porque queremos subir los modelos entrenados al repositorio.
+# Modelos y artefactos de MLflow
+mlruns/
+mlartifacts/
