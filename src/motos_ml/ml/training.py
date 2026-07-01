@@ -15,7 +15,7 @@ from motos_ml.config import DeltaConfig, MLConfig
 
 logger = logging.getLogger(__name__)
 
-CAT_COLS = ["marca", "tipo_normalizado", "km_bucket", "distintivo_ambiental", "iva_deducible"]
+CAT_COLS = ["marca", "tipo_normalizado", "km_bucket", "distintivo_ambiental", "iva_deducible", "origen"]
 NUM_COLS = ["anio", "edad_anios", "km", "cilindrada_cc", "num_plazas", "num_llaves"]
 TARGET = "precio"
 
@@ -39,6 +39,11 @@ def build_base_stages() -> list:
 
 def train_and_log(spark: SparkSession, delta_config: DeltaConfig, ml_config: MLConfig) -> None:
     df = spark.table(delta_config.gold_full).dropna(subset=NUM_COLS + [TARGET])
+    
+    # Filtro opcional por origen
+    if hasattr(ml_config, "origen_filter") and ml_config.origen_filter and ml_config.origen_filter.lower() != "all":
+        df = df.filter(F.col("origen") == ml_config.origen_filter.lower())
+        
     total_rows = df.count()
 
     if total_rows < ml_config.min_rows_to_train:
@@ -68,13 +73,13 @@ def train_and_log(spark: SparkSession, delta_config: DeltaConfig, ml_config: MLC
         .build()
     models_to_train.append(("Random Forest", rf, rf_grid))
 
-    # 2. Gradient Boosted Trees
-    gbt = GBTRegressor(featuresCol="features", labelCol=TARGET, seed=42)
-    gbt_grid = ParamGridBuilder() \
-        .addGrid(gbt.maxIter, [50, 100]) \
-        .addGrid(gbt.maxDepth, [5, 8]) \
-        .build()
-    models_to_train.append(("Gradient Boost", gbt, gbt_grid))
+    # 2. Gradient Boosted Trees (Descomentar para incluir en el entrenamiento)
+    # gbt = GBTRegressor(featuresCol="features", labelCol=TARGET, seed=42)
+    # gbt_grid = ParamGridBuilder() \
+    #     .addGrid(gbt.maxIter, [50, 100]) \
+    #     .addGrid(gbt.maxDepth, [5, 8]) \
+    #     .build()
+    # models_to_train.append(("Gradient Boost", gbt, gbt_grid))
 
     logger.info("Iniciando Hyperparameter Tuning con CrossValidator para %d algoritmos...", len(models_to_train))
 
@@ -164,7 +169,8 @@ def train_and_log(spark: SparkSession, delta_config: DeltaConfig, ml_config: MLC
             # Extraer params dinámicamente
             logged_params = {
                 "model_type": model_name,
-                "total_rows": total_rows
+                "total_rows": total_rows,
+                "origen_filter": ml_config.origen_filter if hasattr(ml_config, "origen_filter") else "all"
             }
             if isinstance(best_model_stage, RandomForestRegressionModel):
                 logged_params["num_trees"] = best_model_stage.getNumTrees

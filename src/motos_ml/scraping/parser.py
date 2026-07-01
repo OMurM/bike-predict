@@ -58,6 +58,52 @@ def parse_motorbike(raw: dict) -> Optional[MotoDTO]:
     return moto
 
 
+def parse_moto_ocasion(raw: dict) -> Optional[MotoDTO]:
+    try:
+        url = raw.get("url", "")
+        parts = url.strip("/").split("/")
+        slug = parts[-1] if parts else ""
+        marca = slug.split("-")[0].upper() if "-" in slug else "DESCONOCIDA"
+
+        # Extraer CC de string ej: "471 CC"
+        cc_str = raw.get("cilindrada", "").upper().replace("CC", "").strip()
+        cc = int(cc_str) if cc_str.isdigit() else None
+        
+        # Extraer CV de string ej: "47 CV"
+        cv_str = raw.get("potencia máxima", "").upper().replace("CV", "").strip()
+        cv = int(cv_str) if cv_str.isdigit() else None
+
+        tipo_raw = raw.get("tipo_moto_url", "").upper()
+        tipo = TIPO_MAP.get(tipo_raw, "otro")
+
+        # Algunas fichas tienen "año" o "ao" (por codificación HTML en BeautifulSoup, aunque forzamos utf-8)
+        anio_str = raw.get("año", raw.get("ao", raw.get("ano", "0")))
+        
+        moto = MotoDTO(
+            marca=marca,
+            modelo=raw.get("modelo", "Desconocido"),
+            anio=int(anio_str),
+            km=int(raw.get("kilómetros", raw.get("kilmetros", "0"))),
+            tipo=tipo,
+            precio=float(raw.get("precio", 0.0)),
+            cilindrada_cc=cc,
+            potencia_cv=cv,
+            ubicacion=None,
+            url_anuncio=url,
+            descripcion=None,
+            origen="moto-ocasion"
+        )
+    except (KeyError, TypeError, ValueError) as e:
+        logger.debug("Error parseando moto ocasion url=%s: %s", raw.get("url", "?"), e)
+        return None
+
+    if not moto.is_valid():
+        logger.debug("MotoDTO inválido moto-ocasion: %s", raw.get("url"))
+        return None
+
+    return moto
+
+
 def parse_all(raw_list: list[dict]) -> list[MotoDTO]:
     """
     Parsea una lista de dicts crudos. Descarta silenciosamente los inválidos.

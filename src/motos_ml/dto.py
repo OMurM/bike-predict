@@ -16,6 +16,7 @@ class MotoDTO:
     ubicacion: Optional[str] = None
     url_anuncio: Optional[str] = None
     descripcion: Optional[str] = None
+    origen: str = "mundimoto"  # mundimoto o moto-ocasion
     distintivo_ambiental: Optional[str] = None
     num_plazas: Optional[int] = None
     num_llaves: Optional[int] = None

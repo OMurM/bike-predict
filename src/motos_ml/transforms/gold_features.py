@@ -39,7 +39,7 @@ def silver_to_gold(spark: SparkSession, config: DeltaConfig) -> DataFrame:
         "km", "km_bucket", "tipo_normalizado",
         "cilindrada_cc", "potencia_cv", "ubicacion",
         "distintivo_ambiental", "num_plazas", "num_llaves", "iva_deducible",
-        "precio", "log_precio", "url_anuncio"
+        "origen", "precio", "log_precio", "url_anuncio"
     )
 
 

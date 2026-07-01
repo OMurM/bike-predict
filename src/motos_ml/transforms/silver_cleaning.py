@@ -11,6 +11,12 @@ logger = logging.getLogger(__name__)
 
 def bronze_to_silver(spark: SparkSession, config: DeltaConfig) -> DataFrame:
     df = spark.table(config.bronze_full)
+    try:
+        df_moto_ocasion = spark.table(config.bronze_moto_ocasion_full)
+        df = df.unionByName(df_moto_ocasion, allowMissingColumns=True)
+        logger.info(f"Unidas tablas {config.bronze_full} y {config.bronze_moto_ocasion_full}")
+    except Exception as e:
+        logger.warning(f"No se pudo leer la tabla {config.bronze_moto_ocasion_full}: {e}")
 
     df = (
         df
