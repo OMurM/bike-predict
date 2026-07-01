@@ -38,10 +38,13 @@ Thumbs.db
 .env.*
 *.secret
 
-# MLflow local runs
-mlruns/
-mlartifacts/
+# Spark Data
+spark-warehouse/
+derby.log
+metastore_db/
 
 # Logs
 *.log
 logs/
+
+# NOTA: No ignoramos mlruns/ ni mlartifacts/ porque queremos subir los modelos entrenados al repositorio.

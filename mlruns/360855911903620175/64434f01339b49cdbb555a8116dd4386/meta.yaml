@@ -1,0 +1,14 @@
+artifact_uri: file:///app/mlruns/360855911903620175/64434f01339b49cdbb555a8116dd4386/artifacts
+end_time: 1782918632438
+entry_point_name: ''
+experiment_id: '360855911903620175'
+lifecycle_stage: active
+run_id: 64434f01339b49cdbb555a8116dd4386
+run_name: amusing-koi-315
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1782918616037
+status: 3
+tags: []
+user_id: root

@@ -1,0 +1,9 @@
+artifact_location: file:///app/mlruns/360855911903620175
+creation_time: 1782918040587
+effective_trace_archival_retention: null
+experiment_id: '360855911903620175'
+last_update_time: 1782918040587
+lifecycle_stage: active
+name: /bike-predict/price-prediction
+trace_location: null
+workspace: default

@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.OneHotEncoderModel","timestamp":1782918619982,"sparkVersion":"3.5.1","uid":"OneHotEncoder_31a85f2d8495","paramMap":{"inputCol":"marca_idx","outputCol":"marca_ohe"},"defaultParamMap":{"outputCol":"OneHotEncoder_31a85f2d8495__output","handleInvalid":"error","dropLast":true}}

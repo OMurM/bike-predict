@@ -1,0 +1,16 @@
+services:
+  pipeline:
+    build: .
+    container_name: bike-predict-pipeline
+    volumes:
+      - ./spark-warehouse:/app/spark-warehouse
+      - ./mlruns:/app/mlruns
+      - ./src:/app/src
+      - ./run_pipeline.py:/app/run_pipeline.py
+    command: tail -f /dev/null
+    environment:
+      - MLFLOW_TRACKING_URI=file:///app/mlruns
+      - MLFLOW_ALLOW_FILE_STORE=true
+    ports:
+      - "5000:5000"
+      - "8888:8888"
